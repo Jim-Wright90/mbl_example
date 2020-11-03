@@ -1,0 +1,112 @@
+---
+title: "MBL Example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r setup 1, include=FALSE}
+
+
+library(tidyverse)
+library(rio)
+library(here)
+library(gghighlight)
+library(forcats)
+library(ggrepel)
+library(gt)
+library(knitr)
+library(kableExtra)
+library(reactable)
+library(plotly)
+library(SCVA)
+library(patchwork)
+library(colorblindr)
+
+
+theme_set(theme_minimal(15) +
+            theme(legend.position = "bottom",
+                  panel.grid.major.x = element_line(color = "gray60"),
+                  panel.grid.minor.x = element_blank(),
+                  panel.grid.major.y = element_blank())
+          )
+
+participant_1 <- import(here("data", "participant_1_data.xlsx"),
+               setclass = "tbl_df") 
+
+participant_2 <- import(here("data", "participant_2_data.xlsx"),
+               setclass = "tbl_df") 
+
+participant_3 <- import(here("data", "participant_3_data.xlsx"),
+               setclass = "tbl_df") 
+ 
+
+
+```
+
+
+```{r, include=FALSE}
+head(participant_1)
+
+p_1_plot <- ggplot() +
+  geom_line(data = participant_1, aes(x = session, y = bl)) +
+  geom_point(data = participant_1, aes(x = session, y = bl), size = 2) +
+  geom_line(data = participant_1, aes(x = session, y = tx)) +
+  geom_point(data = participant_1, aes(x = session, y = tx), size = 2) +
+  scale_x_continuous(limits = c(0, 13),
+                     breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)) +
+  scale_y_continuous(limits = c(0, 60),
+                     breaks = c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) +
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  labs(x = "Session",
+       y = "Participant 1 Axis") 
+
+p_1_plot
+
+p_2_plot <- ggplot() +
+  geom_line(data = participant_2, aes(x = session, y = bl)) +
+  geom_point(data = participant_2, aes(x = session, y = bl), size = 2) +
+  geom_line(data = participant_2, aes(x = session, y = tx)) +
+  geom_point(data = participant_2, aes(x = session, y = tx), size = 2) +
+  scale_x_continuous(limits = c(0, 13),
+                     breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)) +
+  scale_y_continuous(limits = c(0, 60),
+                     breaks = c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) +
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  labs(x = "Session",
+       y = "Participant 2 Axis") 
+
+p_2_plot
+
+p_3_plot <- ggplot() +
+  geom_line(data = participant_3, aes(x = session, y = bl)) +
+  geom_point(data = participant_3, aes(x = session, y = bl), size = 2) +
+  geom_line(data = participant_3, aes(x = session, y = tx)) +
+  geom_point(data = participant_3, aes(x = session, y = tx), size = 2) +
+  scale_x_continuous(limits = c(0, 13),
+                     breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)) +
+  scale_y_continuous(limits = c(0, 60),
+                     breaks = c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) +
+  theme_classic() +
+  labs(x = "Session",
+       y = "Participant 1 Axis") 
+
+p_3_plot
+
+all_plots <- p_1_plot / p_2_plot / p_3_plot
+
+
+all_plots
+```
+
+```{r, include=TRUE, fig.height=12, fig.width=10}
+all_plots
+```
