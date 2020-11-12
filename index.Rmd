@@ -24,6 +24,8 @@ library(plotly)
 library(SCVA)
 library(patchwork)
 library(colorblindr)
+library(scan)
+
 
 
 theme_set(theme_minimal(15) +
@@ -62,7 +64,8 @@ p_1_plot <- ggplot() +
   theme_classic() +
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank(),
-        axis.ticks.x = element_blank()) +
+        axis.ticks.x = element_blank(),
+        axis.line.x = element_blank()) +
   labs(x = "Session",
        y = "Participant 1 Axis") 
 
@@ -80,7 +83,8 @@ p_2_plot <- ggplot() +
   theme_classic() +
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank(),
-        axis.ticks.x = element_blank()) +
+        axis.ticks.x = element_blank(),
+        axis.line.x = element_blank()) +
   labs(x = "Session",
        y = "Participant 2 Axis") 
 
@@ -107,6 +111,78 @@ all_plots <- p_1_plot / p_2_plot / p_3_plot
 all_plots
 ```
 
-```{r, include=TRUE, fig.height=12, fig.width=10}
+```{r, include=TRUE, fig.height=8, fig.width=10}
 all_plots
+```
+
+## SCAN Demonstration {.tabset .tabset-fade .tabset-pills}
+
+```{r, include=FALSE}
+case_1 <- scdf(
+  values = c(A = 10, 10, 10, B = 20, 20, 20, 23, 24, 25, 25, 25, 30, 33), 
+  name = "KAHI"
+)
+
+case_2 <- scdf(
+  values = c(A = 10, 10, 10, 13, 13, 15, B = 23, 24, 30, 30, 36, 30, 40), 
+  name = "GASY"
+)
+
+case_3 <- scdf(
+  values = c(A = 10, 10, 10, 13, 13, 15, 18, 18, B = 30, 30, 42, 42, 50), 
+  name = "GOZO"
+)
+
+all_mbl_data <- c(case_1, case_2, case_3)
+```
+
+
+```{r, include=FALSE}
+marks <- list(
+  positions = list( c(8, 9), c(17, 19), c(7, 18) ), 
+  col = 'red', cex = 2.5, pch = 1
+)
+plot(exampleAB, marks = marks, style = "sienna")
+
+head(exampleAB)
+exampleAB
+
+plot(exampleAB)
+
+plot(all_mbl_data) 
+```
+
+### Version 1
+
+```{r, include=TRUE, fig.height=8, fig.width=10}
+plot(all_mbl_data)
+```
+
+```{r, include=FALSE}
+
+plot_style = style_plotSC(style = "chart",
+                          fill = "grey50",
+                          grid = "lightblue",
+                          pch = 16)
+
+plot_v2 <- plot(
+  all_mbl_data,
+  xlab = "session",
+  ylab = "Participant Measurement",
+  phase.names = c("Baseline", "Treatment"),
+  ylim = c(0, 50),
+  style = plot_style)
+
+```
+
+### Version 2
+
+```{r, include=TRUE, fig.height=8, fig.width=10}
+plot(
+  all_mbl_data,
+  xlab = "session",
+  ylab = "Participant Measurement",
+  phase.names = c("Baseline", "Treatment"),
+  ylim = c(0, 50),
+  style = plot_style)
 ```
